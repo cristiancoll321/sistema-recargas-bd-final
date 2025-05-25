@@ -157,17 +157,17 @@ tarjeta_saldo_historial: Historial de saldos
 ## Consultas Principales
 Auditoría de Estados
 
-Cambios de estado por mes
-Top 5 tarjetas con más cambios
-Análisis de Promociones
+- Cambios de estado por mes
+- Top 5 tarjetas con más cambios
+- Análisis de Promociones
 
-Recargas con promociones aplicadas
-Montos totales por tipo de promoción
-Dispositivos de Validación
+- Recargas con promociones aplicadas
+- Montos totales por tipo de promoción
+- Dispositivos de Validación
 
-Buscar si hay algun saldo específico
-Historial de saldo con información del usuario
-Tarjetas con su historial de saldo más reciente
+- Buscar si hay algun saldo específico
+- Historial de saldo con información del usuario
+- Tarjetas con su historial de saldo más reciente
 
 ## Instrucciones de Implementación
 Crear Base de Datos
