@@ -90,4 +90,5 @@ WHERE tsh.fecha = (
     WHERE tsh2.tarjeta_id = t.tarjeta_id
 )
 OR tsh.fecha IS NULL
-ORDER BY t.tarjeta_id;
+ORDER BY t.tarjeta_id
+LIMIT 10;
