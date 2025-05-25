@@ -102,35 +102,35 @@ CREATE TABLE VIAJES (
     tarjeta_id INTEGER REFERENCES TARJETAS(tarjeta_id)
 );
 
-CREATE TABLE tarjeta_estado_auditoria (
+CREATE TABLE TARJETA_ESTADO_AUDITORIA (
     id_auditoria SERIAL PRIMARY KEY,
-    id_tarjeta INT NOT NULL,
+    tarjeta_id INT NOT NULL,
     estado_anterior VARCHAR(50),
     estado_nuevo VARCHAR(50) NOT NULL,
     fecha_cambio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     usuario_modificacion VARCHAR(100),
-    CONSTRAINT fk_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjeta(id_tarjeta)
+    CONSTRAINT fk_tarjeta FOREIGN KEY (tarjeta_id) REFERENCES tarjetas(tarjeta_id)
 );
 
-CREATE TABLE promocion (
+CREATE TABLE PROMOCION (
     id_promocion SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(255),
     tipo VARCHAR(50)
 );
 
-CREATE TABLE dispositivo_validacion (
+CREATE TABLE DISPOSITIVO_VALIDACION (
     id_dispositivo SERIAL PRIMARY KEY,
     tipo VARCHAR(50) NOT NULL,
     descripcion VARCHAR(255)
 );
 
-CREATE TABLE tarjeta_saldo_historial (
+CREATE TABLE TARJETA_SALDO_HISTORIAL (
     id_historial SERIAL PRIMARY KEY,
-    id_tarjeta INT NOT NULL,
+    tarjeta_id INT NOT NULL,
     saldo DECIMAL(10,2) NOT NULL,
     fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     motivo VARCHAR(100), 
     referencia INT,
-    CONSTRAINT fk_historial_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjeta(id_tarjeta)
+    CONSTRAINT fk_historial_tarjeta FOREIGN KEY (tarjeta_id) REFERENCES tarjetas(tarjeta_id)
 );

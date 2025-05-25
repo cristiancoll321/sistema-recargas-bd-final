@@ -10,9 +10,9 @@ GROUP BY EXTRACT(YEAR FROM fecha_cambio), EXTRACT(MONTH FROM fecha_cambio)
 ORDER BY anio DESC, mes DESC;
 
 --Las 5 tarjetas con mayor numero de cambios de estado
-SELECT id_tarjeta, COUNT(*) AS cantidad_cambios
+SELECT tarjeta_id, COUNT(*) AS cantidad_cambios
 FROM tarjeta_estado_auditoria
-GROUP BY id_tarjeta
+GROUP BY tarjeta_id
 ORDER BY cantidad_cambios DESC
 LIMIT 5;
 
@@ -24,10 +24,8 @@ LEFT JOIN promocion p ON r.id_promocion = p.id_promocion
 WHERE r.id_promocion IS NOT NULL;
 
 --Monto total recargado por cada tipo de promocion en los ultimos 3 meses
-SELECT 
-    p.tipo,
-    SUM(r.monto) AS total_recargado
-FROM recarga r
+SELECT p.tipo, SUM(r.monto) AS total_recargado
+FROM recargas r
 JOIN promocion p ON r.id_promocion = p.id_promocion
 WHERE r.fecha >= CURRENT_DATE - INTERVAL '3 months'
 GROUP BY p.tipo;
@@ -40,23 +38,20 @@ WHERE nombre ILIKE '%bonus%';
 --3. Registro de dispositivos de validacion
 --Consulta: Viajes sin registro de validacion
 SELECT *
-FROM viaje
-WHERE id_dispositivo IS NULL;
+FROM viajes
+WHERE id_dispositivo IS NULL
+LIMIT 10;
 
 --Consulta: Validaciones realizadas por dispositivos de tipo movil en abril de 2025
 SELECT v.*
-FROM viaje v
+FROM viajes v
 JOIN dispositivo_validacion d ON v.id_dispositivo = d.id_dispositivo
 WHERE d.tipo = 'movil'
   AND v.fecha BETWEEN '2025-04-01' AND '2025-04-30';
 
 --Consulta: Dispositivo con mayor cantidad de validaciones
-SELECT 
-    v.id_dispositivo,
-    d.tipo,
-    d.descripcion,
-    COUNT(*) AS cantidad_validaciones
-FROM viaje v
+SELECT v.id_dispositivo, d.tipo, d.descripcion, COUNT(*) AS cantidad_validaciones
+FROM viajes v
 JOIN dispositivo_validacion d ON v.id_dispositivo = d.id_dispositivo
 GROUP BY v.id_dispositivo, d.tipo, d.descripcion
 ORDER BY cantidad_validaciones DESC
@@ -70,10 +65,10 @@ SELECT
     tsh.fecha,
     tsh.saldo,
     tsh.motivo,
-    t.numero_tarjeta
+    t.tarjeta_id
 FROM tarjeta_saldo_historial tsh
-JOIN tarjeta t ON tsh.id_tarjeta = t.id_tarjeta
-WHERE t.id_tarjeta = :id_tarjeta
+JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id
+WHERE t.tarjeta_id = 1
 ORDER BY tsh.fecha;
 
 --Saldos promedio por mes y motivo (JOIN con tarjeta)
@@ -83,12 +78,12 @@ SELECT
     tsh.motivo,
     AVG(tsh.saldo) AS saldo_promedio
 FROM tarjeta_saldo_historial tsh
-JOIN tarjeta t ON tsh.id_tarjeta = t.id_tarjeta
+JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id  -- Fixed table name and column names
 GROUP BY EXTRACT(YEAR FROM tsh.fecha), EXTRACT(MONTH FROM tsh.fecha), tsh.motivo
 ORDER BY anio DESC, mes DESC;
 
 --Tarjetas que han tenido saldo negativo alguna vez
-SELECT DISTINCT t.id_tarjeta, t.numero_tarjeta
+SELECT DISTINCT t.id_tarjeta,
 FROM tarjeta_saldo_historial tsh
-JOIN tarjeta t ON tsh.id_tarjeta = t.id_tarjeta
+JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id
 WHERE tsh.saldo < 0;
