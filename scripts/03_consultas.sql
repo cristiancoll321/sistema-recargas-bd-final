@@ -60,30 +60,34 @@ LIMIT 1;
 --4. Historial de saldo de tarjetas
 --Registrar el historial de saldos de cada tarjeta permite analizar patrones de uso, detectar fraudes, y mejorar la gestion financiera del sistema.
 
---Evolucion del saldo de una tarjeta especifica (JOIN con tarjeta)
+--Buscar si hay algun saldo específico
+SELECT *
+FROM tarjeta_saldo_historial
+WHERE saldo > 0
+LIMIT 5;
+
+--Historial de saldo con información del usuario (usando LEFT JOIN)
+SELECT t.tarjeta_id, u.nombre, u.apellido, tsh.saldo, tsh.fecha, tsh.motivo
+FROM tarjetas t
+LEFT JOIN usuarios u ON t.usuario_id = u.usuario_id
+LEFT JOIN tarjeta_saldo_historial tsh ON t.tarjeta_id = tsh.tarjeta_id
+ORDER BY t.tarjeta_id
+LIMIT 10;
+
+--Tarjetas con su historial de saldo más reciente
 SELECT 
-    tsh.fecha,
+    t.tarjeta_id,
+    t.estado as estado_tarjeta,
+    t.fecha_adquisicion,
     tsh.saldo,
-    tsh.motivo,
-    t.tarjeta_id
-FROM tarjeta_saldo_historial tsh
-JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id
-WHERE t.tarjeta_id = 1
-ORDER BY tsh.fecha;
-
---Saldos promedio por mes y motivo (JOIN con tarjeta)
-SELECT 
-    EXTRACT(YEAR FROM tsh.fecha) AS anio,
-    EXTRACT(MONTH FROM tsh.fecha) AS mes,
-    tsh.motivo,
-    AVG(tsh.saldo) AS saldo_promedio
-FROM tarjeta_saldo_historial tsh
-JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id  -- Fixed table name and column names
-GROUP BY EXTRACT(YEAR FROM tsh.fecha), EXTRACT(MONTH FROM tsh.fecha), tsh.motivo
-ORDER BY anio DESC, mes DESC;
-
---Tarjetas que han tenido saldo negativo alguna vez
-SELECT DISTINCT t.id_tarjeta,
-FROM tarjeta_saldo_historial tsh
-JOIN tarjetas t ON tsh.tarjeta_id = t.tarjeta_id
-WHERE tsh.saldo < 0;
+    tsh.fecha as fecha_saldo,
+    tsh.motivo
+FROM tarjetas t
+LEFT JOIN tarjeta_saldo_historial tsh ON t.tarjeta_id = tsh.tarjeta_id
+WHERE tsh.fecha = (
+    SELECT MAX(fecha) 
+    FROM tarjeta_saldo_historial tsh2 
+    WHERE tsh2.tarjeta_id = t.tarjeta_id
+)
+OR tsh.fecha IS NULL
+ORDER BY t.tarjeta_id;
