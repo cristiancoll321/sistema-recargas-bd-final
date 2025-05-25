@@ -1,0 +1,13 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "149.130.169.172",
+            "port": 33333,
+            "driver": "PostgreSQL",
+            "name": "sistema-recargas-bd-final",
+            "database": "sistema_recargas_viajes_collazos",
+            "username": "admin"
+        }
+    ]
+}
