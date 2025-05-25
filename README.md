@@ -131,10 +131,7 @@ sistema-recargas-bd/
 │   ├── 01_modificaciones.sql  # Modificaciones a tablas
 │   ├── 02_nuevas_tablas.sql   # Nuevas entidades
 │   ├── 03_consultas.sql       # Consultas de análisis
-│   └── inserts/
-│       ├── insert_localidades.sql
-│       ├── insert_tarifas.sql
-│       └── ...
+│   └── inserts
 └── README.md
 ```
 
@@ -168,13 +165,9 @@ Recargas con promociones aplicadas
 Montos totales por tipo de promoción
 Dispositivos de Validación
 
-Viajes sin validación
-Estadísticas por dispositivo
-Historial de Saldos
-
-Evolución de saldos por tarjeta
-Promedios mensuales
-Detección de saldos negativos
+Buscar si hay algun saldo específico
+Historial de saldo con información del usuario
+Tarjetas con su historial de saldo más reciente
 
 ## Instrucciones de Implementación
 Crear Base de Datos
