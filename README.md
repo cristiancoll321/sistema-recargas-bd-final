@@ -179,13 +179,7 @@ Ejecutar Scripts
 Ejecutar scripts en orden numérico
 Verificar creación de tablas
 Cargar datos de prueba
-Configuración de Conexión
-```
-Host: 149.130.169.172
-Port: 33333
-User: admin
-Pass: Pass!__2025!
-```
+
 ## Mejoras Implementadas
 - Auditoría de estados de tarjetas
 - Sistema de promociones
